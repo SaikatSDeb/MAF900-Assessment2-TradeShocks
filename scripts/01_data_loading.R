@@ -18,9 +18,6 @@ library(DBI)
 library(RPostgres)
 library(dplyr)
 
-# =====================================================================
-# 3. Load Raw Data Files
-# =====================================================================
 
 # Load public PPAC crude price data
 ppac_raw <- read_excel(here("data", "raw", "datarawppac_crude_price.xlsx"))
@@ -30,29 +27,33 @@ compustat_raw <- read_csv(here("data", "raw", "datarawcompustat_india_quarterly.
   select(gvkey, conm, gsector, fyearq, fqtr, datadate, oiadpq, saleq)
 
 
-# WRDS Extraction Query Template (dbplyr format)
+# WRDS Extraction Query 
 
+# library(dbplyr) 
+# library(RPostgres)
+# 
+# wrds <- dbConnect(
+#   Postgres(),
+#   host = 'wrds-pgdata.wharton.upenn.edu',
+#   port = 9737,
+#   dbname = 'wrds',
+#   sslmode = 'require',
+#   user = 'wrds_username'
+# )
 
-# wrds_extraction_template <- function() {
-#   library(dbplyr) 
-#   library(RPostgres)
-#   wrds <- dbConnect(
-#     Postgres(),
-#     host = 'wrds-pgdata.wharton.upenn.edu',
-#     port = 9737,
-#     dbname = 'wrds',
-#     sslmode = 'require',
-#     user = 'wrds_username'
-#   )
-#   
-#   compustat_query <- tbl(wrds, in_schema("comp", "g_fundq")) |>
-#     filter(fyearq >= 2015, fyearq <= 2025) |>
-#     select(gvkey, conm, gsector, fyearq, fqtr, datadate, oiadpq, saleq)
-#   
-#   compustat_raw <- compustat_query |> collect()
-#   dbDisconnect(wrds)
-#   return(compustat_raw)
-# }
+# compustat_query <- tbl(wrds, in_schema("comp", "g_fundq")) |>
+#   filter(
+#     fyearq >= 2015, 
+#     fyearq <= 2025,
+#     indfmt == "INDL",   # Industrial format (excludes financial sector)
+#     consol == "C",      # Consolidated financial statements
+#     fic == "IND"        # Country of incorporation: India
+#   ) |>
+#   select(gvkey, conm, gsector, fyearq, fqtr, datadate, oiadpq, saleq)
+# 
+# compustat_raw <- compustat_query |> collect()
+# dbDisconnect(wrds)
+
 
 
 # 5. View the first few rows of each dataset in the console
