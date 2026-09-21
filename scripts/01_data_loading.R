@@ -11,7 +11,7 @@ library(dplyr)
 
 # Load public PPAC crude price data
 ppac_path <- here("data/raw", "datarawppac_crude_price.xlsx")
-crude_raw <- read_excel(ppac_path)
+ppac_raw <- read_excel(ppac_path)
 
 # Load restricted Compustat India quarterly panel (local file)
 compustat_path <- here("data/raw", "datarawcompustat_india_quarterly.csv")
@@ -55,4 +55,4 @@ compustat_raw <- read_csv(compustat_path)
 # # compustat_raw <- DBI::dbGetQuery(wrds, compustat_query)
 # 
 # # Disconnect cleanly
-# # DBI::dbDisconnect(wrds)
+# # DBI::dbDisconnect(wrds))
