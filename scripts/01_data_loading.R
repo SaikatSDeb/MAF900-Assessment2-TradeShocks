@@ -1,61 +1,58 @@
 
-# Script: Data Loading
+# Script 01: Data Loading & WRDS Documentation
 
-# 1. Creating standard reproducible project directories
-dirs <- c("data/raw", "data/processed", "output/tables", "output/figures", "scripts")
-sapply(dirs, dir.create, recursive = TRUE, showWarnings = FALSE)
 
-file.create("data/raw/.gitkeep")
-file.create("data/processed/.gitkeep")
-file.create("output/tables/.gitkeep")
-file.create("output/figures/.gitkeep")
-
-# 2. Required Packages
-library(tidyverse)
 library(here)
 library(readxl)
-library(DBI)
-library(RPostgres)
+library(readr)
 library(dplyr)
 
+# 1.  Load Local Raw Data Files
 
 # Load public PPAC crude price data
-ppac_raw <- read_excel(here("data", "raw", "datarawppac_crude_price.xlsx"))
+ppac_path <- here("data/raw", "datarawppac_crude_price.xlsx")
+crude_raw <- read_excel(ppac_path)
 
-# Load local Compustat quarterly data
-compustat_raw <- read_csv(here("data", "raw", "datarawcompustat_india_quarterly.csv")) |>
-  select(gvkey, conm, gsector, fyearq, fqtr, datadate, oiadpq, saleq)
+# Load restricted Compustat India quarterly panel (local file)
+compustat_path <- here("data/raw", "datarawcompustat_india_quarterly.csv")
+compustat_raw <- read_csv(compustat_path)
 
 
-# WRDS Extraction Query 
+# 2. ACADEMIC DOCUMENTATION: Live WRDS Extraction Template 
+# (Commented out; provided for transparency & auditing purposes)
 
-# library(dbplyr) 
+# library(DBI)
 # library(RPostgres)
+# library(rstudioapi)
 # 
-# wrds <- dbConnect(
-#   Postgres(),
-#   host = 'wrds-pgdata.wharton.upenn.edu',
+# # Connect securely to WRDS (prompts for password securely in the console)
+# wrds <- DBI::dbConnect(
+#   RPostgres::Postgres(),
+#   host = "wrds-pgdata.wharton.upenn.edu",
 #   port = 9737,
-#   dbname = 'wrds',
-#   sslmode = 'require',
-#   user = 'wrds_username'
+#   dbname = "wrds",
+#   sslmode = "require",
+#   user = "YOUR_WRDS_USERNAME",
+#   password = rstudioapi::askForPassword("Enter your WRDS password")
 # )
-
-# compustat_query <- tbl(wrds, in_schema("comp", "g_fundq")) |>
-#   filter(
-#     fyearq >= 2015, 
-#     fyearq <= 2025,
-#     indfmt == "INDL",   # Industrial format (excludes financial sector)
-#     consol == "C",      # Consolidated financial statements
-#     fic == "IND"        # Country of incorporation: India
-#   ) |>
-#   select(gvkey, conm, gsector, fyearq, fqtr, datadate, oiadpq, saleq)
 # 
-# compustat_raw <- compustat_query |> collect()
-# dbDisconnect(wrds)
-
-
-
-# 5. View the first few rows of each dataset in the console
-head(compustat_raw)
-head(ppac_raw)
+# # Test whether the connection can execute a query
+# DBI::dbGetQuery(wrds, "SELECT 1 AS connection_test")
+# 
+# # Build the SQL query for Compustat Global Quarterly 
+# # Filters: 2015-2025, India (fic = 'IND'), Industrial (indfmt = 'INDL'), Consolidated (consol = 'C')
+# compustat_query <- "
+#   SELECT gvkey, conm, gsector, fyearq, fqtr, datadate, oiadpq, saleq
+#   FROM comp.g_fundq
+#   WHERE fyearq BETWEEN 2015 AND 2025
+#     AND indfmt = 'INDL'
+#     AND consol = 'C'
+#     AND fic = 'IND'
+#   ORDER BY gvkey, fyearq, fqtr
+# "
+# 
+# # Pull data into R (live extraction alternative)
+# # compustat_raw <- DBI::dbGetQuery(wrds, compustat_query)
+# 
+# # Disconnect cleanly
+# # DBI::dbDisconnect(wrds)

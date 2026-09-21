@@ -20,8 +20,9 @@ This empirical project investigates the firm-level transmission of significant g
 Due to licensing constraints, raw proprietary firm financials are excluded from this repository via `.gitignore`.
 
 ### 1. Primary Data Sources & Access Requirements
-* **Compustat Global (S&P Global Market Intelligence):** Provides firm-level quarterly financial metrics, income statements, and balance sheets for Indian manufacturing firms (requires institutional subscription access via WRDS).
-* **Petroleum Planning & Analysis Cell (PPAC):** Official Ministry of Petroleum & Natural Gas (Government of India) portal providing Indian Crude Basket prices (publicly accessible via `ppac.gov.in`).
+* **Compustat Global (S&P Global Market Intelligence):** Provides firm-level quarterly financial metrics for Indian manufacturing firms (requires institutional subscription access via WRDS). 
+  * *Note on Replication:* Because proprietary financial data is restricted under `.gitignore`, the pipeline runs using a local pre-extracted CSV (`data/raw/datarawcompustat_india_quarterly.csv`). For full academic transparency, the secure live extraction query (`comp.g_fundq`) using `DBI` and `RPostgres` is documented directly within `scripts/01_data_loading.R`.
+* **Petroleum Planning & Analysis Cell (PPAC):** Official Ministry of Petroleum & Natural Gas portal providing Indian Crude Basket prices (tracked via `data/raw/datarawppac_crude_price.xlsx`).
 
 ### 2. Time Period & Sample Frequency
 * **Sample Window:** 2015 Q1 – 2025 Q4.
