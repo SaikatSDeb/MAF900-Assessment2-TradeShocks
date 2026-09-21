@@ -45,10 +45,11 @@ compustat_raw <- read_csv(compustat_path)
 # SELECT a.gvkey, a.conm, b.gsector, a.fyearq, a.fqtr, a.datadate, a.oiadpq, a.saleq
 # FROM comp.g_fundq AS a
 # LEFT JOIN comp.g_company AS b ON a.gvkey = b.gvkey
-# WHERE a.fyearq BETWEEN 2015 AND 2025
+# WHERE a.datadate BETWEEN '2015-01-01' AND '2025-12-31'
 # AND a.indfmt = 'INDL'
 # AND a.consol = 'C'
 # AND a.fic = 'IND'
+# AND b.costat = 'A'
 "
 # 
 # # Pull data into R (live extraction alternative)
