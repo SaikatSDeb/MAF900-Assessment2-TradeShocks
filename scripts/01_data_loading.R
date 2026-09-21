@@ -56,4 +56,4 @@ compustat_raw <- read_csv(compustat_path)
 # # compustat_raw <- DBI::dbGetQuery(wrds, compustat_query)
 # 
 # # Disconnect cleanly
-# # DBI::dbDisconnect(wrds))
+# # DBI::dbDisconnect(wrds)
