@@ -67,3 +67,6 @@ data/processed/*
 
 # Exception: Force track formatted CSV summary tables in output/
 !output/tables/*.csv
+
+# Exception: Force track the public PPAC crude price Excel file
+!data/raw/datarawppac_crude_price.xlsx

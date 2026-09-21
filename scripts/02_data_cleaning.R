@@ -8,6 +8,7 @@ library(lubridate)
 
 # 1. Clean Monthly PPAC Benchmark Data
 month_names <- c("Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar")
+colnames(ppac_raw)[1] <- "Year"
 colnames(ppac_raw)[2:13] <- month_names
 
 PPac_monthly <- ppac_raw |>

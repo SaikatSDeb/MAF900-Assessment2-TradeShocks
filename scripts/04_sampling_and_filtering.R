@@ -29,15 +29,12 @@ sampled_firms <- firm_sectors |>
 firm_oil_data_filtered <- firm_oil_data |>
   # Simple left join to attach energy_group
   left_join(sampled_firms |> select(gvkey, energy_group), by = "gvkey") |>
-  # Keep ONLY the sampled 100 firms
+  
   filter(!is.na(energy_group)) |>
-  # Remove COVID lockdown quarters
+
   filter(!year %in% c(2020, 2021)) |>
   # Drop missing lag values (2015 calibration quarters)
   filter(!is.na(delta_opm_yoy), !is.na(crude_shock_yoy)) |>
   mutate(delta_opm_yoy = winsorize_vec(delta_opm_yoy, low = 0.01, high = 0.99))
 
-# Verify column existence and display summary
 summary(firm_oil_data_filtered$delta_opm_yoy)
-
-message("Script 04 Complete: Final unbalanced panel filtered and Winsorized.")
