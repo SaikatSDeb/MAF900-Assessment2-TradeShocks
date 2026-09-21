@@ -29,7 +29,7 @@ Due to licensing constraints, raw proprietary firm financials are excluded from 
 * **Base Panel:** Stratified sample of 100 Indian manufacturing firms across GICS sector groups (50 High Energy vs. 50 Low Energy).
 * **Lagged Panel Calibration:** 2015 baseline quarters used for four-quarter rolling year-over-year ($\Delta\text{YoY}$) calculations; effective analysis window spans 2016 Q1 – 2025 Q4.
 * **Data Filtering:** COVID lockdown years (2020 & 2021) are filtered out to eliminate non-market operational distortions.
-* **Outlier Adjustment:** $\Delta\text{OPM}_{\text{YoY}}$ is Winsorized at the 1st and 99th percentiles to eliminate extreme financial ratio spikes.
+* **Outlier Adjustment:** $\Delta\text{OPM}_{\text{it}}$ is Winsorized at the 1st and 99th percentiles to eliminate extreme financial ratio spikes.
 
 ### 3. Empirical Variables & Compustat Identifiers
 
