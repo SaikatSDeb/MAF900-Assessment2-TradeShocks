@@ -42,14 +42,14 @@ compustat_raw <- read_csv(compustat_path)
 # # Build the SQL query for Compustat Global Quarterly 
 # # Filters: 2015-2025, India (fic = 'IND'), Industrial (indfmt = 'INDL'), Consolidated (consol = 'C')
 # compustat_query <- "
-#   SELECT gvkey, conm, gsector, fyearq, fqtr, datadate, oiadpq, saleq
-#   FROM comp.g_fundq
-#   WHERE fyearq BETWEEN 2015 AND 2025
-#     AND indfmt = 'INDL'
-#     AND consol = 'C'
-#     AND fic = 'IND'
-#   ORDER BY gvkey, fyearq, fqtr
-# "
+# SELECT a.gvkey, a.conm, b.gsector, a.fyearq, a.fqtr, a.datadate, a.oiadpq, a.saleq
+# FROM comp.g_fundq AS a
+# LEFT JOIN comp.g_company AS b ON a.gvkey = b.gvkey
+# WHERE a.fyearq BETWEEN 2015 AND 2025
+# AND a.indfmt = 'INDL'
+# AND a.consol = 'C'
+# AND a.fic = 'IND'
+"
 # 
 # # Pull data into R (live extraction alternative)
 # # compustat_raw <- DBI::dbGetQuery(wrds, compustat_query)
